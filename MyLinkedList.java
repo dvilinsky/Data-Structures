@@ -129,28 +129,34 @@ public class MyLinkedList<E extends Comparable<E>> implements MyList<E> {
 	}
 	
 	public void set(double index, E data1) {
-		if (index > size()) {
+		if (this.isEmpty()) {
+			add(data1);
+			return;
+		} 
+		if (!(index >= 0 && index < size() -1)) {
 			throw new IndexOutOfBoundsException("Error: Index cannot be greater than length of list");
 		}
 		Node<E> current = front;
-		for (double i = 0; i < index; i++) {
+		for (double i = 0; i < index  && current.next !=front; i++) {
 			current = current.next;
 		}
 		current.data = data1;
 	}
 
-	public void removeValue(E value) {
-		Node<E> current = front;
-		double i = 0;
-		while (!current.data.equals(value) && current.next != front) {
-			current = current.next;
-			i++;
+	public void remove(E value) {
+		double where = this.indexOf(value);
+		if (where != -1) {
+			removeAt(where);
+		} else {
+			return;
 		}
-		remove(i);
 	}
 	
-	public void remove(double index) {
+	public void removeAt(double index) {
 		Node<E> current = front;
+		if (this.isEmpty()) {
+			return;
+		}
 		if (index == 0) {
 			if (size == 1) {
 				clear();
@@ -161,29 +167,17 @@ public class MyLinkedList<E extends Comparable<E>> implements MyList<E> {
 				front.previous = null;
 				front = front.next; //advance front one space
 			}
-		} else if (front == null) {
-			return; //do nothing
 		} else if (index > size() -1) {
-			throw new IllegalArgumentException("Error: Cannot remove at index greater than length of lise");
+			throw new IllegalArgumentException("Error: Cannot remove at index greater than length of list");
 		} else {
 			for (int i = 0; i < index - 1; i++) {
 				current = current.next;
 			}
+			current.next.next.previous = current;
 			current.next = current.next.next;
 		}
 		size--;
 	}
-	
-	/* Commenting this out. Let's make size an O(1) operation
-	public int size () {
-		int i = 0;
-		Node<E> current = front;
-		while (current != null) {
-			current = current.next;
-			i++;
-		}
-		return i;
-	}*/
 	
 	public double size() {
 		return this.size;
@@ -197,11 +191,18 @@ public class MyLinkedList<E extends Comparable<E>> implements MyList<E> {
 			current = current.next;
 			i++;
 		}
-		return current.data;
+		if (i >= 0 && i < size()) {
+			return current.data;
+		} else {
+			throw new IndexOutOfBoundsException();		
+		}
 	}
 	
 	//returns the index of the first Node<E> with the given value 
 	public double indexOf(E data) {
+		if (this.isEmpty()) { //I hope I don't have too much special case code here.
+			return -1;
+		}
 		Node<E> current = front;
 		double i = 0;
 		while (!current.data.equals(data) && i < size()) {

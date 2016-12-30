@@ -7,8 +7,8 @@ public interface MyList<E> extends Iterable<E> {
 	public void add(E value);
 	public void add(double index, E value);
 	public void addAll(MyList<E> other);
-	public void remove(double index);
+	public void removeAt(double index);
 	public void set(double index, E value); //change data at certain index to certain value 
 	public void clear();
-	public void removeValue(E value);
+	public void remove(E value);
 }
