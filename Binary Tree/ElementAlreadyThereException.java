@@ -3,7 +3,7 @@ public class ElementAlreadyThereException extends Exception {
 	
 	public ElementAlreadyThereException(Object value) {
 		this.value = value;
-		System.out.println("Error: Element with value " + value.toString() + " already exists at this location in three");
+		System.out.println("Error: Element with value " + value.toString() + " already exists at this location in tree");
 	}
 	
 	public ElementAlreadyThereException(String msg) {

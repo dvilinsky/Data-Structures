@@ -89,6 +89,47 @@ class Node<E extends Comparable<E>> implements Comparable<E> {
 		}
 	}
 	
+	/** This method returns the node that would come after this node if the nodes were listed by their 
+	*   values in ascending order.  Running time: O(log(n)), where n is the number of nodes. In a balanced tree,
+	*	the number of parents a Node can have is at most height - 1, and the height is proportional to the log of the 
+	*   number of nodes. Returns null if this Node has no successor. 
+	*/
+	public Node<E> successor() {
+		if (this.rightChild != null) {
+			return findMin(this.rightChild);
+		} else {
+			Node<E> w = this.parent;
+			Node<E> n = this;
+			while (w != null && n == w.rightChild) {
+				n = w;
+				w = w.parent;
+			}
+			return w;
+		}
+	}
+	
+	//Helper method for successor above. Finds the minimum node in the tree rooted at the parameter, root,
+	private Node<E> findMin(Node<E> root) {
+		if (root.leftChild == null) {
+			return root;
+		} else {
+			return findMin(root.leftChild);
+		}
+	}
+	
+	//really wish this was private, but couldn't call it outside the class if that were the case. 
+	//Returns the number of immediate children of this node. 
+	public int numChildren() {
+		int children = 0;
+		if (this.rightChild != null) {
+			children++;
+		}
+		if (this.leftChild != null) {
+			children++;
+		}
+		return children;
+	}
+	
 	//not really necessary if this.data is public 
 	public E getData() {
 		return this.data;
@@ -170,26 +211,74 @@ public class BST<E extends Comparable<E>> implements MyTree<E> {
 		}
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////
-	/*public void delete(E value) {
-		Node<E> toDelete = this.findNode(value);
-		if (toDelete == null) {
-			System.out.println("No such node containing " + value.toString() + " in the tree.");
-			return;
-		}
-		//Case 1: Node is a leaf 
-		if (toDelete.isLeaf()) {
-			if(toDelete.isLeftChild()) {
-				toDelete.parent.leftChild = null;
+	/** Deletes the given value from this tree. Running time: O(log(n)), since findNode is O(log(n)) and after that 
+	*   we only do a small number of constant time operations.
+	*/
+	public void delete(E value) {
+		Node<E> toDelete = findNode(value);
+		int numChildren = toDelete.numChildren();
+		if (numChildren == 0) {
+			//delete case with no kids. Set parent to null
+			if (toDelete.isLeftChild()) {
+				toDelete.parent.leftChild = null; 
 			} else {
 				toDelete.parent.rightChild = null;
 			}
-		} else if ((toDelete.hasLeft() && !toDelete.hasRight()) || (toDelete.hasRight() && !toDelete.hasLeft())) {
-			//Case 2: Node has one child
-			
+		} else if (numChildren == 1) {
+			//"skip over" node to be deleted- basically like deleting in a linked list 
+			deleteOneChild(toDelete);
+		} else { 
+			//case where node has 2 kids- swap with successor, then do case 0 or case 1 
+			Node<E> successor = toDelete.successor();
+			swap(toDelete, successor);
 		}
-	} */
-	///////////////////////////////////////////////////////////////////////////
+	}
+	
+	//This method swaps the node to be deleted with its successor, so that we can then delete it
+	private void swap(Node<E> toDelete, Node<E> successor) {
+		
+	}
+	
+	//helper method for the delete case where a node has one child 
+	private void deleteOneChild(Node<E> toDelete) {
+		int nodeCase = findCase(toDelete);
+		switch (nodeCase) {
+			case 1: 
+				toDelete.parent.leftChild = toDelete.leftChild;
+				toDelete.leftChild.parent = toDelete.parent;
+				toDelete.leftChild = null;
+				break;
+			case 2:
+				toDelete.parent.rightChild = toDelete.leftChild; 
+				toDelete.leftChild.parent = toDelete.parent;
+				toDelete.leftChild = null;
+				break;
+			case 3:
+				toDelete.parent.rightChild = toDelete.rightChild; 
+				toDelete.rightChild.parent = toDelete.parent;
+				toDelete.rightChild = null;
+				break;
+			case 4:
+				toDelete.parent.leftChild = toDelete.rightChild;
+				toDelete.rightChild.parent = toDelete.parent;
+				toDelete.rightChild = null;
+				break;
+		}
+	}
+	
+	//When deleting a node with 1 child, their are four cases. This method returns either 1, 2, 3, or 4, depending 
+	//on which case it is. 
+	private int findCase(Node<E> v) {
+		if (v.hasLeft() && v.isLeftChild()) {
+			return 1;
+		} else if (v.hasLeft() && v.isRightChild()) {
+			return 2;
+		} else if (v.hasRight() && v.isRightChild()) {
+			return 3;
+		} else { //v.hasRight() && v.isLeftChild()
+			return 4;
+		}
+	}
 	
 	/** Prints the preorder traversal of the tree. Since there are N nodes in this tree, and 
 	*   eacn node has to be visited once, the running time is O(N);
@@ -307,6 +396,23 @@ public class BST<E extends Comparable<E>> implements MyTree<E> {
 		}
 	}
 	
+	/** Returns the Node containing the maximum value in this tree. Running time: O(h), where h is the height of the tree. 
+	*   Since this is a balance tree, h is proportionaly to log(n), where n is the number of nodes. So, running time 
+	*   turns out to be O(log(n))
+	*/
+	public Node<E> findMax() {
+		return findMax(topRoot);
+	}
+		
+	//helper method for findMax above 
+	private Node<E> findMax(Node<E> topRoot) {
+		if (topRoot.rightChild == null) {
+			return topRoot;
+		} else {
+			return findMax(topRoot.rightChild);
+		}
+	}
+	
 	/** Returns true if there is a node in this tree that contains the given value, false otherwise 
 	*   Running time: O(log(n)).
 	*/
@@ -348,7 +454,7 @@ public class BST<E extends Comparable<E>> implements MyTree<E> {
 	*   Running time: ???????????
 	*/
 	public int numLevels() {
-		return numLevels(topRoot);
+		return numLevels(topRoot) - 1;
 	}
 	
 	//helper method for numLevels above 
