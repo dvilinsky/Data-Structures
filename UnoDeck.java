@@ -1,4 +1,4 @@
-/* 
+/** 
  * Class for the Uno Deck
  * The cards have already been created for you in the constructor, you just have to add them
  * to your linked list that 
@@ -45,7 +45,7 @@ public class UnoDeck {
 	}
 	
 	/** Adds the card c to a random place in the discard pile 
-	*   Running time: O(1)
+	*   Running time: O(n)
     *   @param the card to discard 
 	*   @exception IllegalArgumentException if the card is invalid
 	*/
@@ -81,7 +81,7 @@ public class UnoDeck {
 				UnoCard uc = i.next();
 				this.deck.regularInsert(uc);
 			}
-			this.deck.clear();
+			this.discard.clear();
 		}
 		return this.deck.removeAt(0);
 	}

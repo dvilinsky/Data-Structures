@@ -31,7 +31,7 @@ public class SinglyLinkedList<E> {
 	*   Running time: O(1)
 	*/
 	public void regularInsert(E data) {
-		SinglyLinkedNode<E> toInsert = new SinglyLinkedNode(data);
+		SinglyLinkedNode<E> toInsert = new SinglyLinkedNode<E>(data);
 		if (this.isEmpty()) {
 			this.head = toInsert;
 			this.tail = toInsert;
@@ -58,7 +58,7 @@ public class SinglyLinkedList<E> {
 	//Helper method for randomInsert. Inserts a node at the given index containing the given data 
 	private void addAt(int index, E data) {
 		if (index == 0) {
-			SinglyLinkedNode<E> toInsert = new SinglyLinkedNode(data);
+			SinglyLinkedNode<E> toInsert = new SinglyLinkedNode<E>(data);
 			if (this.isEmpty()) {
 				tail = toInsert;
 			}
@@ -69,7 +69,7 @@ public class SinglyLinkedList<E> {
 			this.regularInsert(data);
 		} else {
 			SinglyLinkedNode<E> previous = nodeAt(index - 1);
-			SinglyLinkedNode<E> toInsert = new SinglyLinkedNode(data);
+			SinglyLinkedNode<E> toInsert = new SinglyLinkedNode<E>(data);
 			toInsert.next = previous.next;
 			previous.next = toInsert;
 			this.size++;
@@ -138,6 +138,7 @@ public class SinglyLinkedList<E> {
 	}
 	
 	/** Returns the last element in this list without removing it 
+	*   Running time: O(1)
 	*   @return the rear of the list 
 	*/
 	public SinglyLinkedNode<E> peek() {
@@ -166,6 +167,7 @@ public class SinglyLinkedList<E> {
 		this.tail = null;
 		this.size = 0;
 	}
+	
 	/** Creates a string representation of the form [elem1, elem2...elemN], where elem1 is
 	*   at the head, elemN at the tail.
 	*   @return string representation of the list
@@ -195,9 +197,10 @@ public class SinglyLinkedList<E> {
 		return new SLLIterator();
 	}
 	
-	/** Implementation of the Iterator interface for this class. I'm writing this so the 
-	*   drawCard method of UnoDeck.java works. Much of this has been adapted from Chapter 16 of
-	*   "Building Java Programs," 3rd Edition by Reges and Stepp.
+	/** Implementation of the Iterator interface for this class. This kind of breaches the contract 
+	*   of the Iterator interface because it doesn't destroy the underlying list, like the standard
+	*   java one does. I'm writing this so the  drawCard method of UnoDeck.java works. 
+	*   Much of this has been adapted from Chapter 16 of "Building Java Programs," 3rd Edition by Reges and Stepp.
 	*/
 	private class SLLIterator implements Iterator<E> {
 		private SinglyLinkedNode<E> current, previous;
@@ -222,6 +225,7 @@ public class SinglyLinkedList<E> {
 		/** Returns the data of current without removing it
 		*   Running time: O(1)
 		*   @return the data of current
+		*   @exception NoSuchElementException if there is no next element 
 		*/
 		public E next() {
 			if (!hasNext()) {
@@ -237,6 +241,7 @@ public class SinglyLinkedList<E> {
 		/** Removes the element that next() just returned. Assumes user will call next 
 		*   before calling this method. 
 	    *   Running time: O(1)
+		*   @exception IllegalStateException if next() was not called prior to calling this
 		*/
 		public void remove() {
 			if (!removeOK) {
