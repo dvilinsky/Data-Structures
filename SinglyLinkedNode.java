@@ -52,7 +52,7 @@ public class SinglyLinkedNode<E> {
 	
 	/** @return the string representation of the data in the node.
 	*   The running time is undefined. If the node contains an integer, for example,
-	*   then the running time is O(1). However if the node contained an array, the running 
+	*   then the running time is O(1). However if the node contained an arraylist, the running 
 	*   time would be O(n). 
 	*/
 	public String toString() {

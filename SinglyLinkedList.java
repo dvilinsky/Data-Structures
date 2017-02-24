@@ -40,36 +40,65 @@ public class SinglyLinkedList<E> {
 		size++;
 	}
 	
-	/** Removes the node containing "data" from the list 
+	/** Removes the first node containing "data" from the list 
 	*  @param data you want to remove from the list 
+	*  @return the data that the node that was removed contains. Kind of useless, really 
 	*  Running time: Since we have to find where (if anywhere) in the list the data is, 
-	*  the running time is O(n). However, this makes a call to .equals(). Depending on how that is 
-	*  implemented, the running time could be worse. 
+	*  the running time is O(n).
 	*/
-	public void remove(E data) {
-		if (head != null && head.data.equals(data)) {
-			head = head.next;
-		} else {
-			SinglyLinkedNode<E> toRemove = this.findPrevious(data);
-			if (toRemove == null) {
-				return;
-			} 
-			toRemove.next = toRemove.next.next;
-		}
+	public E remove(E data) {
 		this.size--;
+		if (this.head.data.equals(data)) {
+			SinglyLinkedNode<E> temp = head;
+			head = head.next;
+			return temp.data;
+		}
+		SinglyLinkedNode<E> previous = findPrevious(data); //returns the node previous to the one containing the data 
+		if (previous != null) {
+			if (previous.next.data.equals(this.tail.data)) {
+				tail = previous; //if we remove the last node, we have to fix the tail pointer
+			}
+			SinglyLinkedNode<E> temp = previous.next;
+			previous.next = previous.next.next;
+			return temp.data;
+		} else {
+			return null; //if previous was null, then "data" isn't in the list. So we return null
+		}
 	}
 	
-	//Helper method for remove. Returns the node previous to the one containing the data, if it exists.
-	//Retuns null if it doesn't.
+	/** Removes the node at the given index. 
+	*   Running time: O(n), where n is the size of the list 
+	*   @param index of the node to remove 
+	*   @return the data at that index
+	*   @exception IndexOutOfBoundsException if index is >= size 
+	*/
+	public E removeAt(int index) {
+		return remove(nodeAt(index).data);
+	}
+	
+	//Helper method for removeAt. Returns the node at the given index. 
+	private SinglyLinkedNode<E> nodeAt(int index) {
+		if (index >= this.size) {
+			throw new IndexOutOfBoundsException("Error: Index must be less than the size of the list");
+		}
+		SinglyLinkedNode<E> current = head;
+		for (int i = 0; i < index; i++) {
+			current = current.next;
+		}
+		return current;
+	}
+	
+	//Helper method for remove. Returns the node previous to the one containing the data,
+	//or null if the data isn't in the list 
 	private SinglyLinkedNode<E> findPrevious(E data) {
 		SinglyLinkedNode<E> current = head;
-		while (current != null) {
-			if (current.next != null && current.next.data.equals(data)) {
+		while (current.next != null) {
+			if (current.next.data.equals(data)) {
 				return current;
 			}
 			current = current.next;
 		}
-		return current;
+		return null;
 	}
 
 	/** @return True if list is empty, false otherwise 
