@@ -1,3 +1,5 @@
+import java.util.*;
+
 /** This class provides an implementation of a non-circular singly linked list 
 *  @author Daniel Vilinsky  
 */
@@ -37,7 +39,38 @@ public class SinglyLinkedList<E> {
 			tail.next = toInsert;
 			tail = toInsert;
 		}
-		size++;
+		this.size++;
+	}
+	
+	/** Inserts a node containing the given data at a random spot in the list
+	*   Running time: O(n), where n is the numbe of nodes. In the worst case, we might have to insert at the end of the list. 
+	*   @param data to be inserted into the list
+	*/
+	public void randomInsert(E data) {
+		Random r = new Random();
+		int index = r.nextInt(this.size);
+		addAt(index, data);
+	}
+	
+	//Helper method for randomInsert. Inserts a node at the given index containing the given data 
+	private void addAt(int index, E data) {
+		if (index == 0) {
+			SinglyLinkedNode<E> toInsert = new SinglyLinkedNode(data);
+			if (this.isEmpty()) {
+				tail = toInsert;
+			}
+			toInsert.next = head;
+			head = toInsert; 
+			this.size++;
+		} else if (index == this.size - 1) {
+			this.regularInsert(data);
+		} else {
+			SinglyLinkedNode<E> previous = nodeAt(index - 1);
+			SinglyLinkedNode<E> toInsert = new SinglyLinkedNode(data);
+			toInsert.next = previous.next;
+			previous.next = toInsert;
+			this.size++;
+		}
 	}
 	
 	/** Removes the first node containing "data" from the list 
