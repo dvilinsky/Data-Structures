@@ -151,18 +151,21 @@ public class SinglyLinkedList<E> {
 	/** Creates a string representation of the form [elem1, elem2...elemN], where elem1 is
 	*   at the head, elemN at the tail.
 	*   @return string representation of the list
-	*   Running time: O(n^2), if string concatenation is O(n)
+	*   Running time: O(n) because append() is O(1), not O(n) like string concatenation with 
+	*   the + operator is. 
 	*/
 	public String toString() {
 		SinglyLinkedNode<E> current = head;
 		if (current == null) { //list is empty
 			return "[]";
 		}
-		String s = "[" + current.data;
+		StringBuilder sb = new StringBuilder();
+		sb.append("[" + current.data);
 		while (current.next != null) {
 			current = current.next;
-			s += ", " + current.data;
+			sb.append(", ").append(current.data);
 		}
-		return s + "]";
+		sb.append("]");
+		return sb.toString();
 	}
 }
