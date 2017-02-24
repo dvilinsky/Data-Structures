@@ -48,8 +48,11 @@ public class SinglyLinkedList<E> {
 	*/
 	public void randomInsert(E data) {
 		Random r = new Random();
-		int index = r.nextInt(this.size);
-		addAt(index, data);
+		if (this.size == 0) {
+			addAt(0, data);
+	   } else {
+		   addAt(r.nextInt(this.size), data);
+	   }
 	}
 	
 	//Helper method for randomInsert. Inserts a node at the given index containing the given data 
@@ -133,6 +136,13 @@ public class SinglyLinkedList<E> {
 		}
 		return null;
 	}
+	
+	/** Returns the last element in this list without removing it 
+	*   @return the rear of the list 
+	*/
+	public SinglyLinkedNode<E> peek() {
+		return this.tail;
+	}
 
 	/** @return True if list is empty, false otherwise 
 	*   Running time: O(1)
@@ -148,6 +158,14 @@ public class SinglyLinkedList<E> {
 		return this.size;
 	}
 	
+	/** Empties the list. 
+	*   Running time: O(1)
+	*/
+	public void clear() {
+		this.head = null;
+		this.tail = null;
+		this.size = 0;
+	}
 	/** Creates a string representation of the form [elem1, elem2...elemN], where elem1 is
 	*   at the head, elemN at the tail.
 	*   @return string representation of the list
@@ -167,5 +185,65 @@ public class SinglyLinkedList<E> {
 		}
 		sb.append("]");
 		return sb.toString();
+	}
+	
+	/** Gives you an iterator over this list. 
+	*   Running time: O(1)
+	*   @return an Iterator<E> over this list
+	*/
+	public Iterator<E> iterator() {
+		return new SLLIterator();
+	}
+	
+	/** Implementation of the Iterator interface for this class. I'm writing this so the 
+	*   drawCard method of UnoDeck.java works. Much of this has been adapted from Chapter 16 of
+	*   "Building Java Programs," 3rd Edition by Reges and Stepp.
+	*/
+	private class SLLIterator implements Iterator<E> {
+		private SinglyLinkedNode<E> current, previous;
+		private boolean removeOK;
+		
+		/** Constructor for this class
+		*   Running time: O(1)
+		*/
+		public SLLIterator() {
+			current = head;
+			previous = head;
+			removeOK = false;
+		}
+		
+		/** Running time: O(1)
+		*   @return true if there is a next element in this iterator, false otherwise 
+		*/
+		public boolean hasNext() {
+			return current != null; //when current is null, we can't call next anymore 
+		}
+		
+		/** Returns the data of current without removing it
+		*   Running time: O(1)
+		*   @return the data of current
+		*/
+		public E next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			E result = current.data;
+			previous = current;
+			current = current.next;
+			removeOK = true;
+			return result;
+		}
+		
+		/** Removes the element that next() just returned. Assumes user will call next 
+		*   before calling this method. 
+	    *   Running time: O(1)
+		*/
+		public void remove() {
+			if (!removeOK) {
+				throw new IllegalStateException();
+			}
+			previous = current;
+			removeOK = false;
+		}
 	}
 }
