@@ -23,6 +23,7 @@ public class UnoDeck {
 	public UnoDeck(){
 		this.deck = new SinglyLinkedList<UnoCard>();
 		this.discard = new SinglyLinkedList<UnoCard>();
+		this.lastDiscarded = null;
 		for (String color : REGULAR_COLORS){
 			deck.randomInsert(new UnoCard(color, 0)); // add one of your color in zero
 			for (int i = 0; i<2; i++){
@@ -46,15 +47,16 @@ public class UnoDeck {
 	
 	/** Adds the card c to a random place in the discard pile 
 	*   Running time: O(n)
-    *   @param the card to discard 
+    *   @param c, the card to discard 
 	*   @exception IllegalArgumentException if the card is invalid
 	*/
 	public void discardCard(UnoCard c) {
-		if (!c.canBePlacedOn()) {
-			throw new IllegalArgumentException("Error: This card can't be placed on the deck");
+		if (discard.isEmpty() || c.canBePlacedOn(this.lastDiscarded)) {
+			discard.randomInsert(c);
+			this.lastDiscarded = c;			
+		} else {
+			throw new IllegalArgumentException("Error: card " + c + " can't be placed on " + lastDiscarded);
 		}
-		discard.randomInsert(c);
-		this.lastDiscarded = c;
 	}
 	
 	/** Gets the most recently discarded card. Since I've written amazing self-documenting code,
@@ -75,14 +77,37 @@ public class UnoDeck {
 	*   @return: the UnoCard at the top of the deck 
 	*/
 	public UnoCard drawCard() {
+		//WHAT IF THE DISCARD IS ALSO EMPTY?!???!?!?!?!?!
 		if (this.deck.isEmpty()) {
 			Iterator<UnoCard> i = this.discard.iterator();
 			while (i.hasNext()) {
 				UnoCard uc = i.next();
-				this.deck.regularInsert(uc);
+				this.deck.regularInsert(uc); //we don't insert randomly because the discard deck is already random
+				i.remove();
 			}
-			this.discard.clear();
 		}
 		return this.deck.removeAt(0);
 	}
+	
+	/** Returns the contents of the deck in this UnoDeck 
+	*   Running time: O(n). The call to toString of the deck object runs in O(n). and since append()
+	*   is a constant time operation, total running time is O(n)
+	*   @return string representation of the deck object 
+	*/
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("The deck is ").append(this.deck.toString());
+		return sb.toString();
+	}
+	
+	/** Returns the discard pile of this UnoDeck 
+	*   Running time: Like above, is O(n)
+	*   @return string representation of the discard pile 
+	*   @param discardPile flag to print discardPile or deck 
+	*/
+	public String toString(boolean discardPile) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("The discard pile is ").append(this.discard.toString());
+		return sb.toString();
+	}	
 }

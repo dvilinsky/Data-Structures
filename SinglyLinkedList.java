@@ -1,5 +1,5 @@
 import java.util.*;
-
+ 
 /** This class provides an implementation of a non-circular singly linked list 
 *  @author Daniel Vilinsky  
 */
@@ -87,6 +87,9 @@ public class SinglyLinkedList<E> {
 		if (this.head.data.equals(data)) {
 			SinglyLinkedNode<E> temp = head;
 			head = head.next;
+			if (head == null) { //if head ends up being null, then the list is empty, so we have to make tail reflect that
+				tail = null;
+			}
 			return temp.data;
 		}
 		SinglyLinkedNode<E> previous = findPrevious(data); //returns the node previous to the one containing the data 
@@ -113,9 +116,10 @@ public class SinglyLinkedList<E> {
 	}
 	
 	//Helper method for removeAt. Returns the node at the given index. 
+	//Running time: O(n)
 	private SinglyLinkedNode<E> nodeAt(int index) {
-		if (index >= this.size) {
-			throw new IndexOutOfBoundsException("Error: Index must be less than the size of the list");
+		if (index < 0 || index >= this.size) {
+			throw new IndexOutOfBoundsException("Error: Index must be between zero and the size of the list");
 		}
 		SinglyLinkedNode<E> current = head;
 		for (int i = 0; i < index; i++) {
@@ -125,7 +129,7 @@ public class SinglyLinkedList<E> {
 	}
 	
 	//Helper method for remove. Returns the node previous to the one containing the data,
-	//or null if the data isn't in the list 
+	//or null if the data isn't in the list Running time is O(n)
 	private SinglyLinkedNode<E> findPrevious(E data) {
 		SinglyLinkedNode<E> current = head;
 		while (current.next != null) {
@@ -149,6 +153,7 @@ public class SinglyLinkedList<E> {
 	*   Running time: O(1)
 	*/
 	public boolean isEmpty() {
+		//return size == 0;
 		return this.head == null && this.tail == null;
 	}
 	
@@ -176,7 +181,7 @@ public class SinglyLinkedList<E> {
 	*/
 	public String toString() {
 		SinglyLinkedNode<E> current = head;
-		if (current == null) { //list is empty
+		if (this.isEmpty()) {
 			return "[]";
 		}
 		StringBuilder sb = new StringBuilder();
@@ -248,6 +253,10 @@ public class SinglyLinkedList<E> {
 				throw new IllegalStateException();
 			}
 			previous = current;
+			size--;
+			if (size == 0) { //if we end up reducing size to 0, the list is now empty, so we set the pointers to enforce that  
+			    clear();
+			}
 			removeOK = false;
 		}
 	}
