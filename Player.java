@@ -1,8 +1,9 @@
 /** This class represents the abstraction of a Player in the Uno game. Every player knows 
-*   who the next and previous players are, and can access and adjust them.
+*   who the next and previous players are, and can access and adjust them. We implement Comparable 
+*   so that I can use addSorted in the DoublyLinkedList class  
 *   @author Daniel Vilinsky
 */
-public class Player {
+public class Player implements Comparable<Player> {
 	private String name; 
 	private Player nextPlayer=null;
 	private Player prevPlayer=null;
@@ -69,6 +70,22 @@ public class Player {
 	*/
 	public void setPrevPlayer(Player prevPlayer) {
 		this.prevPlayer = prevPlayer;
+	}
+	
+	/** Running time: O(1)
+	*   @return this player's name 
+	*/
+	public String getName() {
+		return this.name;
+	}
+	
+	/** One player is less than another if the name is lexicographically prior to the other 
+	*   Running time: I'll guess O(n). To compare two strings, you might have to compare every character 
+	*   @return 0 if equal, some negative if less than, some positive if greater than 
+	*   @param other the Player to which to compare this player 
+	*/
+	public int compareTo(Player other) {
+		return this.name.compareTo(other.getName());
 	}
 
 	/** This method returns a string containing information about who the next and previous players are,

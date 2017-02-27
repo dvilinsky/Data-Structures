@@ -1,14 +1,13 @@
 public interface MyList<E> extends Iterable<E> {
-	public double size();
-	public E get(double index);
-	public double indexOf(E value);
+	public int size();
+	public E get(int index);
+	public int indexOf(E value);
 	public boolean isEmpty();
 	public boolean contains(E value);
 	public void add(E value);
-	public void add(double index, E value);
-	public void addAll(MyList<E> other);
-	public void removeAt(double index);
+	public void add(int index, E value);
+	public void removeAt(int index);
 	public void remove(E value);
-	public void set(double index, E value); //change data at certain index to certain value 
+	public void set(int index, E value); //change data at certain index to certain value 
 	public void clear();
 }
