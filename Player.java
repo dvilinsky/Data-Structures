@@ -96,8 +96,8 @@ public class Player implements Comparable<Player> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("This player's name is ").append(this.name).append("\n");
-		sb.append("To their left is ").append(this.prevPlayer).append("\n");
-		sb.append("To their right is ").append(this.nextPlayer).append("\n");
+		sb.append("To their left is ").append(this.prevPlayer.getName()).append("\n");
+		sb.append("To their right is ").append(this.nextPlayer.getName()).append("\n");
 		sb.append("Their hand is ").append(this.hand.toString());
 		return sb.toString();
 	}	
