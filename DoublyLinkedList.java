@@ -292,46 +292,72 @@ public class DoublyLinkedList<E extends Comparable<E>> implements MyList<E> {
 		size = 0;
 	}
 	
-	
+	/** Returns an iterator over this list
+    *   Running time: O(1)	
+	*   @return Iterator<E> over the lsit 
+	*/
 	public Iterator<E> iterator() {
-		return new MyLinkedListIterator();
+		return new DLLIterator();
 	}
 	
-	private class MyLinkedListIterator implements Iterator<E> {
+	/** This class provides an implementation of the Iterator interface for the DoublyLinkedList class
+	*/
+	private class DLLIterator implements Iterator<E> {
 		private Node<E> current; //node to remove 
 		private boolean removeOK;
+		private int nodesVisited;
 		
-		public MyLinkedListIterator() {
+		/** Constructor for this class 
+		*   Running time: O(1)
+		*/
+		public DLLIterator() {
             current = front;
             removeOK = false;
+			nodesVisited = 0;
         }
 		
+		/** I am checking for a next value by seeing if we haven't already visited all the nodes 
+		*   in the list. Since someone might want to use an instance of this class multiple times, 
+		*   I reset the number of nodes visited if it reaches size 
+		*   Running time: O(1)
+		*   @return true if there is a next element, false otherwise 
+		*/
 		public boolean hasNext() {
-			return current.next != front;
+			boolean reset = nodesVisited == size();
+			if (reset) {
+				nodesVisited = 0;
+			}
+			return !reset;
 		}
 		
+		/** Returns the next element in the list 
+		*   Running time: O(1)
+		*   @return the data the next element contains 
+		*   @exception NoSuchElementException if there is no next element 
+		*/
 		public E next() {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
-			} 
-			E data = current.data;
+			}
+			E result = current.data;
 			current = current.next;
 			removeOK = true;
-			return data;
+			nodesVisited++;
+			return result;
 		}
 		
+		/** Since removing from a circular, doubly-linked list is a nightmare, I'm just using the removeAt()
+		*   method that class provides. This sacrifices speed at the altar of program succinctness. 
+		*   Running time: O(n)
+		*   @exception IllegalStateException if can't remove 
+		*/
 		public void remove() {
 			if (!removeOK) {
 				throw new IllegalStateException();
 			}
-			current.previous.next = current.next;
-			current.next.previous = current.previous;
-			current.previous = null;
-			current.next = null; //this line and the last is to not leave any dangling pointers 
-			size--;
-			removeOK = false; 
+			removeOK = false;
+			removeAt(nodesVisited - 1);
+			nodesVisited--;
 		}
-		
-		
 	}
 }
