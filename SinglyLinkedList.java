@@ -202,9 +202,8 @@ public class SinglyLinkedList<E> {
 		return new SLLIterator();
 	}
 	
-	/** Implementation of the Iterator interface for this class. This kind of breaches the contract 
-	*   of the Iterator interface because it doesn't destroy the underlying list, like the standard
-	*   java one does. I'm writing this so the  drawCard method of UnoDeck.java works. 
+	/** Implementation of the Iterator interface for this class. I'm writing this so
+	*	the drawCard method of UnoDeck.java works. 
 	*   Much of this has been adapted from Chapter 16 of "Building Java Programs," 3rd Edition by Reges and Stepp.
 	*/
 	private class SLLIterator implements Iterator<E> {
