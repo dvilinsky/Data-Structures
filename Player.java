@@ -34,13 +34,11 @@ public class Player implements Comparable<Player> {
 		this.hand.removeAt(index);
 	}
 	
-	/** Returns true when this player has one- that if their hand contains no elements 
+	/** Returns true when this player has won- that is, if their hand contains no elements 
 	*   Running time: O(1)
 	*   @return true if their hand contains no elements 
 	*/
 	public boolean winner(){
-		// return true when your hand has nothing left. 
-		// you have to implement this
 		return this.hand.isEmpty();
 	}
 	
@@ -79,6 +77,13 @@ public class Player implements Comparable<Player> {
 		return this.name;
 	}
 	
+	/** Running time: O(1)
+	*   @return this players hand
+	*/
+	public SinglyLinkedList<UnoCard> getHand() {
+		return this.hand;
+	}
+	
 	/** One player is less than another if the name is lexicographically prior to the other 
 	*   Running time: I'll guess O(n). To compare two strings, you might have to compare every character 
 	*   @return 0 if equal, some negative if less than, some positive if greater than 
@@ -95,9 +100,7 @@ public class Player implements Comparable<Player> {
 	*/
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("This player's name is ").append(this.name).append("\n");
-		sb.append("To their left is ").append(this.prevPlayer.getName()).append("\n");
-		sb.append("To their right is ").append(this.nextPlayer.getName()).append("\n");
+		sb.append("This player's name is ").append(this.name).append(". ");
 		sb.append("Their hand is ").append(this.hand.toString());
 		return sb.toString();
 	}	

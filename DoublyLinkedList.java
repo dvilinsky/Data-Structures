@@ -300,6 +300,10 @@ public class DoublyLinkedList<E extends Comparable<E>> implements MyList<E> {
 		return new DLLIterator();
 	}
 	
+	public MyIterator<E> endlessIterator() {
+		return new EndlessIterator();
+	}
+	
 	/** This class provides an implementation of the Iterator interface for the DoublyLinkedList class
 	*/
 	private class DLLIterator implements Iterator<E> {
@@ -358,6 +362,35 @@ public class DoublyLinkedList<E extends Comparable<E>> implements MyList<E> {
 			removeOK = false;
 			removeAt(nodesVisited - 1);
 			nodesVisited--;
+		}
+	}
+	
+	private class EndlessIterator implements MyIterator<E> {
+		private Node<E> current;
+		
+		public EndlessIterator() {
+			current = front;
+		}
+		
+		public boolean hasNext() {
+			return !isEmpty();
+		}
+		
+		public E next(boolean direction) {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			E result = current.data;
+			if (direction) { //going forward 
+				current = current.next;
+			} else { //going backward
+				current = current.previous;
+			}
+			return result;
+		}
+		
+		public void remove() {
+			return;
 		}
 	}
 }

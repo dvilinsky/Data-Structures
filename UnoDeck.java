@@ -110,4 +110,6 @@ public class UnoDeck {
 		sb.append("The discard pile is ").append(this.discard.toString());
 		return sb.toString();
 	}	
+	
+	public int size() {return deck.size();}
 }
