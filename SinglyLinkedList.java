@@ -145,8 +145,8 @@ public class SinglyLinkedList<E> {
 	*   Running time: O(1)
 	*   @return the rear of the list 
 	*/
-	public SinglyLinkedNode<E> peek() {
-		return this.tail;
+	public E peek() {
+		return this.tail.data;
 	}
 
 	/** @return True if list is empty, false otherwise 
