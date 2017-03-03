@@ -30,8 +30,8 @@ public class Player implements Comparable<Player> {
 	*   Running time: O(n), where n is the length of the underlying list
 	*   @param index the index of the card to remove
 	*/
-	public void removeFromHand(int index){
-		this.hand.removeAt(index);
+	public UnoCard removeFromHand(int index){
+		return this.hand.removeAt(index);
 	}
 	
 	/** Returns true when this player has won- that is, if their hand contains no elements 
@@ -91,6 +91,15 @@ public class Player implements Comparable<Player> {
 	*/
 	public int compareTo(Player other) {
 		return this.name.compareTo(other.getName());
+	}
+	
+	public boolean equals(Object o) {
+		if (o instanceof Player) {
+			Player other = (Player) o;
+			return this.getName().equals(other.getName());
+		} else {
+			return false;
+		}
 	}
 
 	/** This method returns a string containing information about who the next and previous players are,

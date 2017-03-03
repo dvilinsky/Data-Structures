@@ -23,6 +23,14 @@ public class PlayerCircle implements Iterable<Player> {
 		this.circle.addSorted(p);
 	}
 	
+	/** Removes player from the circle. 
+	*   Running time: O(n), where n is the length of the underlying list 
+	*   @param p the player to remove 
+	*/
+	public void removeFromCircle(Player p) {
+		this.circle.remove(p);
+	}
+	
 	/** Get's the first player in the circle. 
 	*   Running time: O(1). While DoublyLinkedList::get(index) is O(n) in the worst case, 
 	*   if this method only calls get(0), then that method runs in constant time. 
