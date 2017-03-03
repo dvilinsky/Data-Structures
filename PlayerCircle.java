@@ -2,7 +2,7 @@ import java.util.*;
 
 /** This is how we represent the participants in the Uno game. It basically just provides
 *   a layer of abstraction over the DoublyLinkedList class and only lets you access that 
-*   class in certain ways. 
+*   class in certain ways.
 *   @author Daniel Vilinsky 
 */
 public class PlayerCircle implements Iterable<Player> {
@@ -57,11 +57,16 @@ public class PlayerCircle implements Iterable<Player> {
 		return circle.toString();
 	}
 	
-	
+	/** Gives you an Iterator<Player> over the underlying list 
+	*   @return an Iterator<Player>
+	*/
 	public Iterator<Player> iterator() {
 		return circle.iterator();
 	}
 	
+	/** Gives you a MyIterator<Player> over the underlying list 
+	*   @return a MyIterator<Player>
+	*/
 	public MyIterator<Player> endlessIterator() {
 		return circle.endlessIterator();
 	}

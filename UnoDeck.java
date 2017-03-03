@@ -1,7 +1,6 @@
 /** 
  * Class for the Uno Deck
- * The cards have already been created for you in the constructor, you just have to add them
- * to your linked list that 
+ * Maintains two stacks of cards- one for the playing deck, another of the discard pile
  */
 
 import java.util.*;
@@ -18,7 +17,7 @@ public class UnoDeck {
    	 *  two Draw Two cards; two Skip cards; and two Reverse cards. 
 	 *  In addition there are four Wild cards and four Wild Draw Four cards.
 	 *  This constructor initializes our deck to conform to that standard. The deck is also randomly ordered
-	 *  Running time: Who knows?
+	 *  Running time: O(n), where n is the size of the deck 
 	 */
 	public UnoDeck(){
 		this.deck = new SinglyLinkedList<UnoCard>();
@@ -77,7 +76,7 @@ public class UnoDeck {
 	*   @return: the UnoCard at the top of the deck 
 	*/
 	public UnoCard drawCard() {
-		//WHAT IF THE DISCARD IS ALSO EMPTY?!???!?!?!?!?!
+		//hopefully, discard is not empty also...
 		if (this.deck.isEmpty()) {
 			Iterator<UnoCard> i = this.discard.iterator();
 			while (i.hasNext()) {
@@ -110,6 +109,4 @@ public class UnoDeck {
 		sb.append("The discard pile is ").append(this.discard.toString());
 		return sb.toString();
 	}	
-	
-	public int size() {return deck.size();}
 }

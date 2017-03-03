@@ -1,3 +1,5 @@
+/** This exists so I have a quick reference of all the methods in the DoublyLinkedList class
+*/
 public interface MyList<E> extends Iterable<E> {
 	public int size();
 	public E get(int index);

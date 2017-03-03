@@ -55,7 +55,11 @@ public class SinglyLinkedList<E> {
 	   }
 	}
 	
-	//Helper method for randomInsert. Inserts a node at the given index containing the given data 
+	/** Helper method for randomInsert. Inserts a node at the given index containing the given data 
+	*	Running time: O(n)
+	*   @param index the index to put the data 
+	*   @param data the data to insert 
+	*/
 	private void addAt(int index, E data) {
 		if (index == 0) {
 			SinglyLinkedNode<E> toInsert = new SinglyLinkedNode<E>(data);
@@ -115,8 +119,12 @@ public class SinglyLinkedList<E> {
 		return remove(nodeAt(index).data);
 	}
 	
-	//Helper method for removeAt. Returns the node at the given index. 
-	//Running time: O(n)
+	/**Helper method for removeAt. Returns the node at the given index. 
+	*  Running time: O(n)
+	*  @param index of the node we're looking for 
+	*  @return the node at the index passed in 
+	*  @exception IndexOutOfBoundsException if ndex < 0 || index >= size
+	*/
 	private SinglyLinkedNode<E> nodeAt(int index) {
 		if (index < 0 || index >= this.size) {
 			throw new IndexOutOfBoundsException("Error: Index must be between zero and the size of the list");
@@ -128,8 +136,11 @@ public class SinglyLinkedList<E> {
 		return current;
 	}
 	
-	//Helper method for remove. Returns the node previous to the one containing the data,
-	//or null if the data isn't in the list Running time is O(n)
+	/**Helper method for remove. Returns the node previous to the one containing the data,
+	*  or null if the data isn't in the list Running time is O(n)
+	*  @param data the data to search for 
+	*  @return the node containing the data, or null if the list doesn't contain the given data 
+	*/
 	private SinglyLinkedNode<E> findPrevious(E data) {
 		SinglyLinkedNode<E> current = head;
 		while (current.next != null) {
@@ -153,7 +164,6 @@ public class SinglyLinkedList<E> {
 	*   Running time: O(1)
 	*/
 	public boolean isEmpty() {
-		//return size == 0;
 		return this.head == null && this.tail == null;
 	}
 	
@@ -176,8 +186,10 @@ public class SinglyLinkedList<E> {
 	/** Creates a string representation of the form [elem1, elem2...elemN], where elem1 is
 	*   at the head, elemN at the tail.
 	*   @return string representation of the list
-	*   Running time: O(n) because append() is O(1), not O(n) like string concatenation with 
-	*   the + operator is. 
+	*   Running time: Undefined. StringBuilder.append(Object o) calls that object's toString method, 
+	*   and this method doesn't know what the running time of that is. The object could be a 2D array, 
+	*   which makes the running time of this method O(n^3), or it could be an integer, which makes our 
+	*   running time O(n)
 	*/
 	public String toString() {
 		SinglyLinkedNode<E> current = head;

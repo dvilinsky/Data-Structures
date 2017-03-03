@@ -63,6 +63,9 @@ public class DoublyLinkedList<E extends Comparable<E>> implements MyList<E> {
 	private Node<E> front; 
 	private int size; 
 	
+	/** Constructor for this class. 
+	*   Running time: O(1)
+	*/
 	public DoublyLinkedList() {
 		front = null;
 		size = 0;
@@ -300,11 +303,15 @@ public class DoublyLinkedList<E extends Comparable<E>> implements MyList<E> {
 		return new DLLIterator();
 	}
 	
+	/** Returns an endless iterator over this list 
+	*   Running time: O(1)
+	*   @return a MyIterator<E> over this list 
+	*/
 	public MyIterator<E> endlessIterator() {
 		return new EndlessIterator();
 	}
 	
-	/** This class provides an implementation of the Iterator interface for the DoublyLinkedList class
+	/** This class provides an implementation of the Java Iterator interface for the DoublyLinkedList class
 	*/
 	private class DLLIterator implements Iterator<E> {
 		private Node<E> current; //node to remove 
@@ -365,32 +372,50 @@ public class DoublyLinkedList<E extends Comparable<E>> implements MyList<E> {
 		}
 	}
 	
+	/** An endless interator is one that allows a client to keep calling next() as 
+	*   long as the list is not empty. 
+	*/
 	private class EndlessIterator implements MyIterator<E> {
 		private Node<E> current;
 		
+		/** Constructor. Not much else to say. 
+		*   Running time: O(1)
+		*/
 		public EndlessIterator() {
 			current = front;
 		}
 		
+		/** Running time: O(1)
+		*   @retunr true if the list is not empty, false otherwise
+		*/
 		public boolean hasNext() {
 			return !isEmpty();
 		}
 		
-		public E next(boolean direction) {
+		/** Gives the caller whatever "current" is when the method is called. 
+		*   Running time: O(1)
+		*   @return the data of the current element 
+		*   @exception NoSuchElementException
+		*/
+		public E next() {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
 			E result = current.data;
-			if (direction) { //going forward 
-				current = current.next;
-			} else { //going backward
-				current = current.previous;
-			}
 			return result;
 		}
 		
-		public void remove() {
-			return;
+		/** Moves the iterator one step forward or back, depending on direction 
+		*   being true or false, respectively. 
+		*   Running time: O(1)
+		*   @param direction the direction to go- forward or back. 
+		*/
+		public void advance(boolean direction) {
+			if (direction) {
+				current = current.next;
+			} else {
+				current = current.previous;
+			}
 		}
 	}
 }

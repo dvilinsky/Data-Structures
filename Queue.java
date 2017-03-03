@@ -80,8 +80,11 @@ public class Queue<E> {
 	
 	/** Returns a string representation of this queue of the form [e1, e2, ... , eN], where
 	*   el is the front of the queue, eN is the rear.
-	*   Running time: O(n), where n is the size of the queue
 	*   @return string representation of this queue
+	*   Running time: Undefined. StringBuilder.append(Object o) calls that object's toString method, 
+	*   and this method doesn't know what the running time of that is. The object could be a 2D array, 
+	*   which makes the running time of this method O(n^3), or it could be an integer, which makes our 
+	*   running time O(n);
 	*/
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
