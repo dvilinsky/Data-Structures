@@ -93,6 +93,12 @@ public class Player implements Comparable<Player> {
 		return this.name.compareTo(other.getName());
 	}
 	
+	/** Two players are equal if their names are equal 
+	*   Running time: O(n), where n is the length of each player's names. String equality 
+	*   is O(n) because we have to check every character in the worst case 
+	*   @param o the object to compare this player to 
+	*   @return true if this and o are equal, false other wise 
+	*/
 	public boolean equals(Object o) {
 		if (o instanceof Player) {
 			Player other = (Player) o;
